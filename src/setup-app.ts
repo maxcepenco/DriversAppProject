@@ -2,15 +2,19 @@ import express, { Express, Request, Response } from 'express';
 import {db} from "./db/db";
 import {HttpStatuses} from "./core/http-statuses";
 import {Driver} from "./drivers/types/driver";
+import {RequestWithBody, RequestWithParams} from "./core/reuqestParams";
+import {CreateDriverDto} from "./drivers/dto/driver.create-driver-dto";
+import {UriParamsInputDto} from "./drivers/dto/driver.uri-params-dto";
 
-
+//-------------------------------------Crud endpoint-------------------------------------------------------
 export const setupApp = (app:Express) => {
     app.use(express.json());
 
     app.get('/drivers', (req: Request, res: Response) => {
         res.status(200).send(db.drivers)
     })
-    app.get('/drivers/:id', (req: Request, res: Response) => {
+
+    app.get('/drivers/:id', (req: RequestWithParams<UriParamsInputDto>, res: Response) => {
        const foundDrivers = db.drivers.find(d => d.id === +req.params.id)
         if(!foundDrivers) {
             res.sendStatus(HttpStatuses.NotFound_404)
@@ -19,8 +23,8 @@ export const setupApp = (app:Express) => {
         res.status(HttpStatuses.Ok_200).send(foundDrivers)
     })
 
-    app.post('/drivers', (req: Request, res: Response) => {
-        const newDriver: Driver = {
+    app.post('/drivers', (req: RequestWithBody<CreateDriverDto>, res: Response) => {
+        const createNewDriver: Driver = {
             id: db.drivers.length ? db.drivers[db.drivers.length -1].id + 1 : 1,
             name: req.body.name,
             phoneNumber: req.body.phoneNumber,
@@ -33,10 +37,13 @@ export const setupApp = (app:Express) => {
             vehicleFeatures: req.body.vehicleFeatures,
             createdAt: new Date(),
         }
-        db.drivers.push(newDriver)
-        res.status(HttpStatuses.Created_201).send(newDriver)
+        db.drivers.push(createNewDriver)
+        res.status(HttpStatuses.Created_201).send(createNewDriver)
     })
 
+
+
+    //------------------------------Test endpoint-------------------------------------------------
     app.get('/testing',(req: Request, res: Response) => {
         res.status(HttpStatuses.Ok_200).send('testing url')
     })
