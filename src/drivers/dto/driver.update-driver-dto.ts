@@ -1,8 +1,9 @@
+
+
 import {VehicleFeature} from "../types/driver";
 
 
-export type CreateDriverDto = {
-    id:number
+export type UpdateDriverDto = {
     name: string
     phoneNumber:string
     email:string
@@ -10,7 +11,6 @@ export type CreateDriverDto = {
     vehicleModel:string
     vehicleYear:number
     vehicleLicensePlate:string
-    vehicleDescription:string
+    vehicleDescription:string | null
     vehicleFeatures: VehicleFeature[]
-
 }
