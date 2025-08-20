@@ -4,18 +4,13 @@ import {DriverInputDto} from "../../dto/driver.input-dto";
 import {Response} from "express";
 import {HttpStatuses} from "../../../core/utils/http-statuses";
 import {createErrorMessage} from "../../../core/utils/error.utils";
-import {vehicleInputDtoValidation} from "../../../validation/vehicleInputDtoValidation";
 import {driversRepository} from "../../repository/driverRepository";
 
 
 export const updateDriverHandler = (req:RequestWithParamsAndBody<UriParamsInputDto,DriverInputDto>, res:Response) => {
     const id = parseInt(req.params.id)
 
-    const errors = vehicleInputDtoValidation(req.body)
-    if(errors.length > 0) {
-        res.status(HttpStatuses.BadRequest_400).send(createErrorMessage(errors))
-        return
-    }
+
 
     const isUpdated = driversRepository.updateDriver(id, req.body)
 

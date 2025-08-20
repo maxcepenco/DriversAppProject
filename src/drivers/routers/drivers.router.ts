@@ -1,26 +1,47 @@
-import {Router,Request,Response} from "express";
-import {HttpStatuses} from "../../core/utils/http-statuses";
-import {db} from "../../db/db";
-import {UriParamsInputDto} from "../dto/driver.uri-params-dto";
-import {RequestWithBody, RequestWithParams, RequestWithParamsAndBody} from "../../core/utils/reuqestParams";
-import {createErrorMessage} from "../../core/utils/error.utils";
-import {vehicleInputDtoValidation} from "../../validation/vehicleInputDtoValidation";
-import {DriverInputDto} from "../dto/driver.input-dto";
-import {Driver} from "../types/driver";
+import {Router} from "express";
 import {CreateDriverHandler} from "./handlers/CreateDriverHandler";
 import {GetDriverListHandler} from "./handlers/GetDriverListHandler";
 import {getDriverHandler} from "./handlers/getDriverHandler";
 import {updateDriverHandler} from "./handlers/UpdateDriverHandler";
 import {deleteDriverHandler} from "./handlers/DeleteDriverHandler";
+import {driverInputDtoValidation} from "../../core/middleware/BodyInputValidationMiddleware";
+import {inputValidationResultMiddleware} from "../../core/middleware/garbenErrorsResultValidation";
+import {validationParamsIdMiddleware} from "../../core/middleware/validationParamsIdMiddleware";
 
 
 export const driversRouter = Router({})
 
     driversRouter
-        .post('',CreateDriverHandler)
+
         .get('', GetDriverListHandler)
-        .get('/:id', getDriverHandler)
-        .put('/:id', updateDriverHandler)
-        .delete('/:id', deleteDriverHandler)
+
+        .post(
+            '',
+            driverInputDtoValidation,
+            inputValidationResultMiddleware,
+            CreateDriverHandler
+        )
+
+
+        .get(
+            '/:id',
+            validationParamsIdMiddleware,
+            inputValidationResultMiddleware,
+            getDriverHandler
+        )
+
+        .put(
+            '/:id',validationParamsIdMiddleware,
+            driverInputDtoValidation,
+            inputValidationResultMiddleware,
+            updateDriverHandler
+        )
+
+        .delete(
+            '/:id',
+            validationParamsIdMiddleware,
+            inputValidationResultMiddleware,
+            deleteDriverHandler
+        )
 
 
