@@ -1,7 +1,7 @@
 import {param} from "express-validator";
 
 
-export const validationParamsIdMiddleware = param('id')
+export const idValidation = param('id')
     .exists()
     .withMessage('ID is required')
     .isString()

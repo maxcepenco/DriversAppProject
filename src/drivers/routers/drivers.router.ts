@@ -6,7 +6,7 @@ import {updateDriverHandler} from "./handlers/UpdateDriverHandler";
 import {deleteDriverHandler} from "./handlers/DeleteDriverHandler";
 import {driverInputDtoValidation} from "../../core/middleware/BodyInputValidationMiddleware";
 import {inputValidationResultMiddleware} from "../../core/middleware/garbenErrorsResultValidation";
-import {validationParamsIdMiddleware} from "../../core/middleware/validationParamsIdMiddleware";
+import {idValidation} from "../../core/middleware/idValidation";
 import {superAdminGuardMiddleware} from "../../core/middleware/suberAdminGuardMiddleware";
 
 
@@ -27,13 +27,13 @@ export const driversRouter = Router({})
 
         .get(
             '/:id',
-            validationParamsIdMiddleware,
+            idValidation,
             inputValidationResultMiddleware,
             getDriverHandler
         )
 
         .put(
-            '/:id',validationParamsIdMiddleware,
+            '/:id',idValidation,
             superAdminGuardMiddleware,
             driverInputDtoValidation,
             inputValidationResultMiddleware,
@@ -43,7 +43,7 @@ export const driversRouter = Router({})
         .delete(
             '/:id',
             superAdminGuardMiddleware,
-            validationParamsIdMiddleware,
+            idValidation,
             inputValidationResultMiddleware,
             deleteDriverHandler
         )
