@@ -6,7 +6,6 @@ export enum Currency {
 }
 
 export type Ride = {
-    id: number
     clientName: string
     driverId: number
     driverName: string
