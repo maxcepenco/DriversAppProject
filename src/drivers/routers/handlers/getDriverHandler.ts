@@ -3,16 +3,11 @@ import {RequestWithParams} from "../../../core/utils/reuqestParams";
 import {HttpStatuses} from "../../../core/utils/http-statuses";
 import {createErrorMessage} from "../../../core/utils/error.utils";
 import {Response} from "express";
-import {driversRepository} from "../../repository/driverRepository";
+import {driversRepository} from "../../repository/driverRepositoryInMondoDB";
 
-export const getDriverHandler = (req:RequestWithParams<UriParamsInputDto>, res:Response) => {
+export const getDriverHandler = async (req:RequestWithParams<UriParamsInputDto>, res:Response) => {
     const id = Number(req.params.id)
-    if (!Number.isInteger(id) || id <= 0) {
-        return res
-            .status(HttpStatuses.BadRequest_400)
-            .send(createErrorMessage([{ field: 'id', message: 'Invalid id' }]))
-    }
-    const driver = driversRepository.getDriverById(id)
+    const driver =  await driversRepository.findById(id)
     if(!driver) {
         res
             .status(HttpStatuses.NotFound_404)

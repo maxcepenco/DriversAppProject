@@ -6,15 +6,16 @@ export enum VehicleFeature {
 }
 
 export type Driver = {
-    id:number
     name:string
     phoneNumber:string
     email:string
-    vehicleMake: string
-    vehicleModel: string
-    vehicleYear: number
-    vehicleLicensePlate: string
-    vehicleDescription: string | null
-    vehicleFeatures: VehicleFeature[]
+    vehicle: {
+        make: string
+        model: string
+        year:number
+        licensePlate:string
+        description:string | null
+        features: VehicleFeature[]
+    }
     createdAt:Date
 }

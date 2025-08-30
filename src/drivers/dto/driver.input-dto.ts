@@ -9,6 +9,6 @@ export type DriverInputDto = {
     vehicleModel: string
     vehicleYear: number
     vehicleLicensePlate: string
-    vehicleDescription: string
+    vehicleDescription: string | null
     vehicleFeatures: VehicleFeature[]
 }
